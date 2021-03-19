@@ -155,8 +155,46 @@ class CustomConfigProvider implements ConfigProviderInterface
 
         if ($product->getTypeId() === Configurable::TYPE_CODE) {
             $childProducts = $product->getTypeInstance(true)->getUsedProducts($product);
+
+            $allSizes = [];
+            $currentSize = null;
+
+            /** Get Current Size and collect All Sizes */
             foreach ($childProducts as $child) {
-                if ($child->isSaleable() && $child->getSku() != $sku) {
+                if ($child->getSku() == $sku) {
+                    $currentSize = $child->getData($sizeAttribute);
+                }
+
+                $allSizes[] = $child->getData($sizeAttribute);
+            }
+
+            /** Remove Duplicates */
+            $allSizes = array_unique($allSizes);
+
+            /** What Sizes are allowed */
+            $allowedSizes = [];
+
+            /** Pick out next and previous size */
+            foreach ($allSizes as $size) {
+                if ($size == $currentSize) {
+                    $currentSizeIndex = array_search($currentSize, $allSizes);
+                    if ($currentSizeIndex !== FALSE) {
+                        /** Prev Size */
+                        if (isset($allSizes[$currentSizeIndex - 1])) {
+                            $allowedSizes[] = $allSizes[$currentSizeIndex - 1];
+                        }
+
+                        /** Next Size */
+                        if (isset($allSizes[$currentSizeIndex + 1])) {
+                            $allowedSizes[] = $allSizes[$currentSizeIndex + 1];
+                        }
+                    }
+                }
+            }
+
+            /** Get products for sizes that are allowed */
+            foreach ($childProducts as $child) {
+                if ($child->isSaleable() && $child->getSku() != $sku && in_array($child->getData($sizeAttribute), $allowedSizes)) {
                     $sizes[] = [
                         'variantSku' => $child->getSku(),
                         'size' => $child->getAttributeText($sizeAttribute),
