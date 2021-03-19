@@ -6,6 +6,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Toshi\Shipping\Logger\Logger;
 
 class Data extends AbstractHelper
 {
@@ -18,6 +19,11 @@ class Data extends AbstractHelper
      * @var ScopeConfigInterface
      */
     protected $scopeConfig;
+
+        /**
+     * @var Logger
+     */
+    protected $logger;
 
     const MODE = 'carriers/toshi/mode';
     const ENVIRONMENT = 'carriers/toshi/environment';
@@ -32,8 +38,8 @@ class Data extends AbstractHelper
     const DEFERRED_DAYS = 'carriers/toshi/deferred_days';
     const TAX_POSTCODE = 'tax/defaults/postcode';
 
-    const ADDRESS_ELIGIBLE_ENDPOINT = '/api/v2/address/eligible';
-    const CONFIRM_ORDER_ENDPOINT = '/api/v2/order/confirm_store_order';
+    const ADDRESS_ELIGIBLE_ENDPOINT = '/v2/address/eligible';
+    const CONFIRM_ORDER_ENDPOINT = '/v2/order/confirm_store_order';
 
     const SHIPPING_METHOD = 'toshi_toshi';
 
@@ -44,15 +50,18 @@ class Data extends AbstractHelper
      * @param Context $context
      * @param Curl $curlClient
      * @param ScopeConfigInterface $scopeConfig
+     * @param Logger $logger
      */
     public function __construct(
         Context $context,
         Curl $curlClient,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        Logger $logger
     )
     {
         $this->curlClient = $curlClient;
         $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
 
         parent::__construct($context);
     }
