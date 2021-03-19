@@ -44,7 +44,7 @@ This will go through each product and set the attribute to true.
 
 To ensure Try Before you buy will show on the frontend, ensure that `Cash on Delivery` is enabled.  
 
-**Deffered Shipping** 
+**Deferred Shipping** 
 
 There is a Toshi Deferred shipping attribute that can be set at config level to deffer the the options provided by Toshi for date selections.
 e.g If there is a deffered date of 2 days on the config then available dates will be shown two days from today. 
