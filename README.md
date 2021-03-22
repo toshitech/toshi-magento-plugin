@@ -24,7 +24,7 @@ Once that is done head to `Stores->Configuration->Sales->Shipping Methods` and f
 * Environment -> Switch between pulling in Live or Staging JS
 * Toshi Client API Keys + Server API Keys
 * Colour and Size Attributes to be used on Toshi -> Used within the API and frontend to indicate to Toshi what is used for colour and sizes.
-* Deffered Days -> Use for Deffer Shipping
+* Deferred Days -> Use for Defer Shipping
 
 **Create products**
 
