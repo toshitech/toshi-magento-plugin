@@ -1,0 +1,18 @@
+<?php
+$script = \Toshi\Shipping\Helper\Data::SCRIPT_SANDBOX;
+if ($this->helper('Toshi\Shipping\Helper\Data')->getEnvironment() == \Toshi\Shipping\Model\Adminhtml\Source\Environment::ENVIRONMENT_PRODUCTION) {
+    $script = \Toshi\Shipping\Helper\Data::SCRIPT_PRODUCTION;
+}
+?>
+<!-- Load in Toshi Script -->
+<script>
+    if (!window.toshi) {
+        require.config({
+            map: {
+                '*': {
+                    'toshijs': '<?= $script ?>'
+                }
+            }
+        });
+    }
+</script>
