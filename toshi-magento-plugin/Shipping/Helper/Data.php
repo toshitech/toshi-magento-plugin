@@ -72,7 +72,8 @@ class Data extends AbstractHelper
      */
     private function getConfigValue($path)
     {
-        return $this->scopeConfig->getValue($path);
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORES;
+        return $this->scopeConfig->getValue($path, $storeScope);
     }
 
     /**
