@@ -220,13 +220,3 @@ obs.observe(document.body, {
     characterData: false,
     subtree: true
 });
-
-/** Load in Toshi Script */
-if (!window.toshi) {
-    let toshiScript = document.createElement('script');
-    toshiScript.id = 'toshi-script';
-    toshiScript.src = window.checkoutConfig.toshiScript;
-
-    toshiScript.async = true;
-    document.head.appendChild(toshiScript);
-}

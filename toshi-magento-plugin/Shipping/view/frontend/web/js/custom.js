@@ -1,5 +1,5 @@
 define([
-    'uiComponent', 'jquery', 'toshiShipping'
+    'uiComponent', 'jquery', 'toshijs', 'toshiShipping'
   ], function(
     Component
   ) {
