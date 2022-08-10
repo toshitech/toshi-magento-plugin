@@ -2,7 +2,6 @@ let toshiLaunched = false;
 let timeSlotSelected = false;
 let additionalSizes = [];
 let addressFields = [];
-let modal;
 
 function launchToshi() {
 
@@ -34,7 +33,7 @@ function launchToshi() {
         };
     }
 
-    modal = window.toshi.createBookingIntegration(config);
+    window.toshi.createBookingIntegration(config).then(modal => {
 
     jQuery('#label_carrier_toshi_toshi').append('<div id="toshi-app"></div>');
 
@@ -135,7 +134,7 @@ function launchToshi() {
             });
         }
         
-        const createProduct = (name, sku, qty, imageUrl, retailPrice, size, colour, availableSizes, availabilityType, availabilityDate) => {
+        function createProduct(name, sku, qty, imageUrl, retailPrice, size, colour, availableSizes, availabilityType, availabilityDate) {
             return {
                 /** Mandatory Properties */
                 name: name,
@@ -153,7 +152,7 @@ function launchToshi() {
                 availabilityType: availabilityType,
                 availabilityDate: availabilityDate,
             };
-        };
+        }
 
         let products = [];
         let sizeAttribute = checkoutConfig.toshiSizeAttribute;
@@ -174,10 +173,9 @@ function launchToshi() {
 
         modal.setProducts(products);
 
-    }
 
 /** Get Attribute */
-const getAttribute = (item, attributeType) => {
+function getAttribute(item, attributeType) {
     let attributeValue = '';
     if (attributeType) {
         item.options.forEach(function (option) {
@@ -190,7 +188,7 @@ const getAttribute = (item, attributeType) => {
 }
 
 /** Get Customer Email */
-const getCustomerEmail = () => {
+function getCustomerEmail() {
     if (isCustomerLoggedIn) {
         return customerData.email;
     } else {
@@ -199,7 +197,9 @@ const getCustomerEmail = () => {
 }
 
 /** Get Container */
-const getContainerElement = () => document.getElementById('label_carrier_toshi_toshi');
+function getContainerElement() {
+    return document.getElementById('label_carrier_toshi_toshi');
+}
 
 /** Mount mutation observer waiting to initiate Toshi */
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
@@ -220,3 +220,5 @@ obs.observe(document.body, {
     characterData: false,
     subtree: true
 });
+})
+}
