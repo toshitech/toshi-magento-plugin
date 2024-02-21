@@ -67,28 +67,10 @@ function launchToshi() {
         });
 
         setTimeout(() => {
-            /** Customer logged in and address exists */
-            if (isCustomerLoggedIn && Object.keys(customerData.addresses).length > 0) {
-                let addressIndex = jQuery('.shipping-address-items').children('.selected-item').index();
-
-                /** Select Address */
-                let address = Object.values(customerData.addresses)[addressIndex];
-
-                modal.setFirstName(address.firstname);
-                modal.setLastName(address.lastname);
-                modal.setEmail(getCustomerEmail());
-                modal.setPhone(address.telephone);
-                modal.setAddress({
-                    addressLine1: address.street[0],
-                    addressLine2: address.street[1],
-                    town: address.city,
-                    province: address.region.region,
-                    postcode: address.postcode,
-                    country: address.country_id
-                });
-
-            } else {
-                /** Logged in customer with no existing address or guest customer */
+            let addressIndex = jQuery('.shipping-address-items').children('.selected-item').index();
+            let formSelector = 'form[data-role=co-shipping-form]',
+                shippingForm = jQuery(formSelector);
+            if (shippingForm.length > 0) {
                 addressFields = ['input[name=street\\[0\\]]', 'input[name=street\\[1\\]]', 'input[name=city]', 'input[name=region]', 'input[name=postcode]'];
                 modal.setFirstName(jQuery('input[name=firstname]').val());
                 modal.setLastName(jQuery('input[name=lastname]').val());
@@ -120,7 +102,25 @@ function launchToshi() {
                 jQuery(document).on('change', addressFields, function() {
                     setAddress();
                 });
-                
+            } else {
+                /** Customer logged in and address exists */
+                if (isCustomerLoggedIn && Object.keys(customerData.addresses).length > 0 && addressIndex >= 0) {
+                    /** Select Address */
+                    let address = Object.values(customerData.addresses)[addressIndex];
+
+                    modal.setFirstName(address.firstname);
+                    modal.setLastName(address.lastname);
+                    modal.setEmail(getCustomerEmail());
+                    modal.setPhone(address.telephone);
+                    modal.setAddress({
+                        addressLine1: address.street[0],
+                        addressLine2: address.street[1],
+                        town: address.city,
+                        province: address.region.region,
+                        postcode: address.postcode,
+                        country: address.country_id
+                    });
+                }
             }
         }, 750);
         
